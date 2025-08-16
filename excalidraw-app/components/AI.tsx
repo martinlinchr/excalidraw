@@ -38,9 +38,8 @@ export const AIComponents = ({
           const textFromFrameChildren = getTextFromElements(children);
 
           const response = await fetch(
-            `${
-              import.meta.env.VITE_APP_AI_BACKEND
-            }/v1/ai/diagram-to-code/generate`,
+            // Hardcoded backend URL instead of environment variable
+            `https://excalidraw-backend.martin-linde.com/v1/ai/diagram-to-code/generate`,
             {
               method: "POST",
               headers: {
@@ -102,9 +101,8 @@ export const AIComponents = ({
         onTextSubmit={async (input) => {
           try {
             const response = await fetch(
-              `${
-                import.meta.env.VITE_APP_AI_BACKEND
-              }/v1/ai/text-to-diagram/generate`,
+              // Hardcoded backend URL instead of environment variable
+              `https://excalidraw-backend.martin-linde.com/v1/ai/text-to-diagram/generate`,
               {
                 method: "POST",
                 headers: {
