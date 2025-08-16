@@ -1,25 +1,23 @@
-version: "3.8"
-
 services:
   excalidraw:
-    build:
-      context: .
-      args:
-        - NODE_ENV=development
-    container_name: excalidraw
-    ports:
-      - "3000:80"
-    restart: on-failure
-    stdin_open: true
-    healthcheck:
-      disable: true
+    build: .
     environment:
-      - NODE_ENV=development
-    volumes:
-      - ./:/opt/node_app/app:delegated
-      - ./package.json:/opt/node_app/package.json
-      - ./yarn.lock:/opt/node_app/yarn.lock
-      - notused:/opt/node_app/app/node_modules
-
-volumes:
-  notused:
+      - NODE_ENV=production
+      - VITE_APP_AI_BACKEND=https://excalidraw-backend.martin-linde.com
+      - VITE_APP_BACKEND_V2_GET_URL=https://excalidraw.martin-linde.com
+      - VITE_APP_WS_SERVER_URL=wss://excalidraw.martin-linde.com/ws
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.excalidraw.rule=Host(`excalidraw.martin-linde.com`)"
+      - "traefik.http.services.excalidraw.loadbalancer.server.port=80"  # Assuming build exposes 80
+    networks:
+      - excalidraw-net
+  excalidraw-room:
+    image: excalidraw/excalidraw-room:latest
+    environment:
+      - PORT=5001
+    networks:
+      - excalidraw-net
+networks:
+  excalidraw-net:
+    driver: bridge
