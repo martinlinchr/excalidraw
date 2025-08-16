@@ -1,6 +1,9 @@
 services:
   excalidraw:
-    build: .
+    build: 
+      context: .
+      args:
+        - VITE_APP_AI_BACKEND=https://excalidraw-backend.martin-linde.com
     environment:
       - NODE_ENV=production
       - VITE_APP_AI_BACKEND=https://excalidraw-backend.martin-linde.com
@@ -9,7 +12,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.excalidraw.rule=Host(`excalidraw.martin-linde.com`)"
-      - "traefik.http.services.excalidraw.loadbalancer.server.port=80"  # Assuming build exposes 80
+      - "traefik.http.services.excalidraw.loadbalancer.server.port=80"
     networks:
       - excalidraw-net
   excalidraw-room:
